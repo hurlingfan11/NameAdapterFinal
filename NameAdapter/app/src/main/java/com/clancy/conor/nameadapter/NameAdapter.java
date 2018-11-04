@@ -23,6 +23,12 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.NameViewHolder
         mRecyclerView = recyclerView;
     }
 
+    public void removeName(int index){
+        mNames.remove(index);
+        notifyItemRemoved(index);
+        notifyItemRangeChanged(0, mNames.size());
+    }
+
     public void addName(){
         mNames.add(0, getRandomName());
         //notifyDataSetChanged(); // Works fine but no animation
@@ -77,7 +83,13 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.NameViewHolder
             mNameTextView = itemView.findViewById(R.id.name);
             mDescriptionTextView = itemView.findViewById(R.id.description);
 
-
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    removeName(getAdapterPosition());
+                    return true;
+                }
+            });
         }
     }
 
